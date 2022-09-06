@@ -3,9 +3,10 @@ import tkinter as tk
 from tkinter import *
 from tkinter import ttk
 from tkinter.messagebox import showinfo
-from turtle import onclick
+from turtle import bgcolor, onclick
 from tkcalendar import DateEntry
 from datetime import date
+
 
 from mail_setup import *
 from mail_functions import StartDriver, AccessMail, AccessMailFolder, CollectExcelList
@@ -220,6 +221,77 @@ def ConfigDomain(row_number):
     domain_value.bind("<FocusIn>", RemoveTextDomain)
     domain_value.bind("<FocusOut>", ShowTextDomain)
     domain_value.grid(column=2, row=row_number, columnspan=4, ipadx=10, ipady=2, sticky="W")
+
+
+
+
+
+
+
+
+  
+
+
+
+
+def back_to(row_number):
+    global back_to_label
+    #domain_text = tk.StringVar()
+
+    #back_to_label = ttk.Label(signin, text="Back to main page",width=30)
+    #back_to_label.grid(column=0, row=row_number, columnspan=2, ipadx=6, ipady=5, sticky="W")
+    
+
+    #container_luu = tk.Frame(signin)
+    #container_luu.pack(side="top",fill="both", expand=True)
+
+
+
+    back_to_btn = Button(signin,text="Back to main page",width=30,borderwidth=0)
+    back_to_btn.grid(column=0, row=row_number, columnspan=2, ipadx=6, ipady=5, sticky="W")
+    placeholder_domain = tooltips["domain"]
+    
+
+
+    move_to_spam_button = ttk.Button(signin, text="Move To Spam", width=15)
+    move_to_spam_button.grid(column=3, row=row_number, columnspan=2, ipadx=6, ipady=3, sticky="W")
+    
+
+    mark_as_read_button = ttk.Button(signin, text="Mark as Read", width=15)
+    mark_as_read_button.grid(column=5, row=row_number, columnspan=2, ipadx=6, ipady=3, sticky="W")
+
+def suspected_mails(row_number):
+    global suspected_mails_label
+    back_to_label = ttk.Label(signin, text="You have [1] suspected mails",width=35)
+    back_to_label.grid(column=0, row=row_number+1, columnspan=2, ipadx=6, ipady=5, sticky="W")
+
+
+    #view_list_label = ttk.Button(signin, text="View list",width=10)
+    #view_list_label.grid(column=3, row=row_number+1, columnspan=2, ipadx=6, ipady=5, sticky="W")
+
+    view_list_btn=Button(signin,text="View list",width=10,borderwidth=0)
+    view_list_btn.grid(column=3, row=row_number+1, columnspan=2, ipadx=6, ipady=5, sticky="W")
+  
+    
+    back_to_label2 = ttk.Label(signin, text="You have [1] important mails",width=35)
+    back_to_label2.grid(column=0, row=row_number+2, columnspan=2, ipadx=6, ipady=5, sticky="W")
+
+    view_list_btn2=Button(signin,text="View list",width=10,borderwidth=0)
+    view_list_btn2.grid(column=3, row=row_number+2, columnspan=2, ipadx=6, ipady=5, sticky="W")
+
+    back_to_label3 = ttk.Label(signin, text="You have [1] groupware mails",width=35)
+    back_to_label3.grid(column=0, row=row_number+3, columnspan=2, ipadx=6, ipady=5, sticky="W")
+
+    view_list_btn3=Button(signin,text="View list",width=10,borderwidth=0)
+    view_list_btn3.grid(column=3, row=row_number+3, columnspan=2, ipadx=6, ipady=5, sticky="W")
+
+    back_to_label4 = ttk.Label(signin, text="You have [1] others mails",width=35)
+    back_to_label4.grid(column=0, row=row_number+4, columnspan=2, ipadx=6, ipady=5, sticky="W")
+
+    view_list_btn4=Button(signin,text="View list",width=10,borderwidth=0)
+    view_list_btn4.grid(column=3, row=row_number+4, columnspan=2, ipadx=6, ipady=5, sticky="W")
+
+
 
 def ConfigID(row_number):
     global id_value, id_text
@@ -553,6 +625,7 @@ def HandlerBar():
     # Handler - Buttons 'Mark as Read' and 'Move to Spam'
     ConfigHandlerButtons(other_row+2)
 
+
 def MainUI():
     global root, signin
 
@@ -560,8 +633,8 @@ def MainUI():
     root = tk.Tk()
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
-    width = 500
-    height = 300
+    width = 800
+    height = 500
     x = (screen_width/3) - (width/2)
     y = (screen_height/3) - (height/2)
     root.geometry('%dx%d+%d+%d' % (width, height, x, y))
@@ -577,6 +650,14 @@ def MainUI():
     global signin_start_row
     signin_start_row = 0
 
+    back_to(row_number=signin_start_row)
+    suspected_mails(row_number=signin_start_row+1)
+
+
+    
+
+    '''
+
     ConfigDomain(row_number=signin_start_row)
     ConfigID(row_number=signin_start_row+1)
     ConfigPassword(row_number=signin_start_row+2)
@@ -588,7 +669,7 @@ def MainUI():
     ConfigOptions(row_number=signin_start_row+5)
     
     # Add an empty space
-    ConfigEmptyLabel(signin, row_number=signin_start_row+6)
+    #ConfigEmptyLabel(signin, row_number=signin_start_row+6)
     
     # Start and Quit button
     ConfigButtons(row_number=signin_start_row+7)
@@ -599,6 +680,11 @@ def MainUI():
     # Separate content frame
     ConfigSeparator(signin, row_number=signin_start_row+9)
 
+    '''
+
+
+
+   
     root.mainloop()
 
 MainUI()
