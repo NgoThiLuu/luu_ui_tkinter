@@ -2,10 +2,12 @@ from calendar import Calendar
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 from tkinter.messagebox import showinfo
 from turtle import bgcolor, onclick
 from tkcalendar import DateEntry
 from datetime import date
+
 
 
 from mail_setup import *
@@ -168,7 +170,8 @@ def MarkAsReadFunction():
         "suspected_dict": suspected_dict,
         "important_dict": important_dict,
         "groupware_dict": groupware_dict,
-        "other_dict": other_dict
+        "other_dict": other_dict,
+       
     }
 
     selected_mails_text = []
@@ -458,30 +461,6 @@ def ShowSuspectedMails():
 
 
 
-def ShowSuspectedMails_clear():
-    global suspected_dict
-    #suspected_dict = {}
-    # item_index = {
-    #       "var": "",
-    #       "text": ""
-    # }
-
-    
-    if len(suspected_mails) > 0:
-        for item in suspected_mails:
-            item_var = tk.BooleanVar()
-            
-            row_number = handler_start_row + int(suspected_mails.index(item)) + 1
-            item_checkbox = tk.Checkbutton(signin, text=item, var=item_var, command="")
-            item_checkbox.grid(column=0, row=row_number, columnspan=6, ipadx=6, ipady=2, sticky="W")
-
-            item_index = str(suspected_mails.index(item))
-            suspected_dict.clear({item_index: {}})
-            suspected_dict[item_index]["checkbox"] = item_checkbox
-            suspected_dict[item_index]["var"] = item_var
-            suspected_dict[item_index]["text"] = item
-    
-    return suspected_dict
 
 
 
@@ -515,28 +494,6 @@ def ShowImportantMails():
 
 
 
-def ShowImportantMails_clear():
-    global important_dict
-    #important_dict = {}
-
-    if len(important_mails) > 0:
-        for item in important_mails:
-            item_var = tk.BooleanVar()
-            
-            current_row = suspected_row + 1
-            item_position = int(important_mails.index(item)) + 1
-            row_number = current_row + item_position
-
-            item_checkbox = tk.Checkbutton(signin, text=item, var=item_var, command="")
-            item_checkbox.grid(column=0, row=row_number, columnspan=6, ipadx=6, ipady=2, sticky="W")
-
-            item_index = str(important_mails.index(item))
-            important_dict.clear({item_index: {}})
-            important_dict[item_index]["checkbox"] = item_checkbox
-            important_dict[item_index]["var"] = item_var
-            important_dict[item_index]["text"] = item
-    
-    return important_dict
 
 
 
@@ -546,6 +503,7 @@ def ShowImportantMails_clear():
 
 def ShowGroupwareMails():
     global groupware_dict
+    
     #groupware_dict = {}
 
     if len(groupware_mails) > 0:
@@ -569,28 +527,7 @@ def ShowGroupwareMails():
 
 
 
-def ShowGroupwareMails_clear():
-    global groupware_dict
-    #groupware_dict = {}
 
-    if len(groupware_mails) > 0:
-        for item in groupware_mails:
-            item_var = tk.BooleanVar()
-            
-            current_row = important_row + 1
-            item_position = int(groupware_mails.index(item)) + 1
-            row_number = current_row + item_position
-
-            item_checkbox = tk.Checkbutton(signin, text=item, var=item_var, command="")
-            item_checkbox.grid(column=0, row=row_number, columnspan=6, ipadx=6, ipady=2, sticky="W")
-
-            item_index = str(groupware_mails.index(item))
-            groupware_dict.clear({item_index: {}})
-            groupware_dict[item_index]["checkbox"] = item_checkbox
-            groupware_dict[item_index]["var"] = item_var
-            groupware_dict[item_index]["text"] = item
-    
-    return groupware_dict
 
 
 
@@ -623,28 +560,7 @@ def ShowOtherMails():
     return other_dict
 
 
-def ShowOtherMails_clear():
-    global other_dict
-    #other_dict = {}
 
-    if len(other_mails) > 0:
-        for item in other_mails:
-            item_var = tk.BooleanVar()
-            
-            current_row = groupware_row + 1
-            item_position = int(other_mails.index(item)) + 1
-            row_number = current_row + item_position
-
-            item_checkbox = tk.Checkbutton(signin, text=item, var=item_var, command="")
-            item_checkbox.grid(column=0, row=row_number, columnspan=6, ipadx=6, ipady=2, sticky="W")
-
-            item_index = str(other_mails.index(item))
-            other_dict.clear({item_index: {}})
-            other_dict[item_index]["checkbox"] = item_checkbox
-            other_dict[item_index]["var"] = item_var
-            other_dict[item_index]["text"] = item
-    
-    return other_dict
 
 
 
@@ -676,27 +592,7 @@ def ConfigSuspectedHandler(current_row):
     return end_row
 
 
-def ConfigSuspectedHandler_clear(current_row):
-    global suspected_mails, suspected_dict, suspected_view
-    suspected_dict = {}
-    suspected_mails = CollectExcelList("suspected_mails")
 
-    if len(suspected_mails) > 0:
-        suspected_msg = "You have [%s] suspected mails." % str(len(suspected_mails))
-        suspected_label = ttk.Label(signin, text=suspected_msg)
-        suspected_label.grid(column=0, row=current_row, columnspan=3, ipadx=6, ipady=2, sticky="W")
-
-        suspected_view = ttk.Button(signin, text="View List", width=5, command=ShowSuspectedMails_clear)
-        suspected_view.grid(column=4, row=current_row, columnspan=3, ipadx=6, ipady=2, sticky="W")
-    
-    end_row = current_row + int(len(suspected_mails))
-
-    ''' 🚩To-Do: 
-                + suspected_mails collect from excel log []
-                + if suspected_mails > 0 => show ok btn
-                + suspected_mails: make it empty first => If 0 elif > 0 '''
-    
-    return end_row
 
 
 
@@ -729,83 +625,64 @@ def ConfigImportantHandler(current_row):
 
 
 
-def ConfigImportantHandler_clear(current_row):
-    global important_mails, important_dict, important_view
-    important_dict = {}
-    important_mails = CollectExcelList("important_mails")
-
-    if len(important_mails) > 0:
-        important_msg = "You have [%s] important mails."  % str(len(important_mails))
-        important_label = ttk.Label(signin, text=important_msg)
-        important_label.grid(column=0, row=current_row, columnspan=3, ipadx=6, ipady=2, sticky="W")
-
-        important_view = ttk.Button(signin, text="View List", width=5, command=ShowImportantMails_clear)
-        important_view.grid(column=4, row=current_row, columnspan=3, ipadx=6, ipady=2, sticky="W")
-
-
-        
-    end_row = current_row + int(len(important_mails))
-
-    return end_row
-
-
-
-
-
-
-
+def HideGroupwares():  
+    groupware_view.config(text="Luu TEST")     # Mới thêm
+    
 
 
 def ConfigGroupwareHandler(current_row):
-    global groupware_mails, groupware_dict
+    global groupware_mails, groupware_dict,groupware_view
     groupware_dict = {}
     groupware_mails = CollectExcelList("groupware_mails")
+    
+   
 
     if len(groupware_mails) > 0:
         groupware_msg = "You have [%s] groupware mails." % str(len(groupware_mails))
         groupware_label = ttk.Label(signin, text=groupware_msg)
         groupware_label.grid(column=0, row=current_row, columnspan=3, ipadx=6, ipady=2, sticky="W")
-
-        groupware_view = ttk.Button(signin, text="View List", width=5, command=ShowGroupwareMails)
         
+        groupware_view = ttk.Button(signin, text="View List", width=8, command=ShowGroupwareMails)
+        
+        #groupware_view = ttk.Button(signin, text="View List", width=8, command=HideGroupwares)    # Mới thêm
+       
         groupware_view.grid(column=4, row=current_row, columnspan=3, ipadx=6, ipady=2, sticky="W")
+
+        groupware_view.config(command=lambda:[groupware_view.destroy(),ShowGroupwareMails()])
+
 
     end_row = current_row + int(len(groupware_mails))
 
     return end_row
 
+  
 
 
-def ConfigGroupwareHandler_clear(current_row):
-    global groupware_mails, groupware_dict
-    groupware_dict = {}
-    groupware_mails = CollectExcelList("groupware_mails")
 
-    if len(groupware_mails) > 0:
-        groupware_msg = "You have [%s] groupware mails." % str(len(groupware_mails))
-        groupware_label = ttk.Label(signin, text=groupware_msg)
-        groupware_label.grid(column=0, row=current_row, columnspan=3, ipadx=6, ipady=2, sticky="W")
 
-        groupware_view = ttk.Button(signin, text="View List", width=5, command=ShowGroupwareMails_clear)
-        groupware_view.grid(column=4, row=current_row, columnspan=3, ipadx=6, ipady=2, sticky="W")
 
-    end_row = current_row + int(len(groupware_mails))
-
-    return end_row
+def toggle(self):
+    if bool(self.show.get()):
+        self.sub_frame.pack(fill="x", expand=1)
+        self.groupware_view.configure(text='Hide List')
+    else:
+        self.sub_frame.forget()
+        
+        self.groupware_view.configure(text='View List')
 
 
 
 
 
 
-
-
+def something_1():    
+    groupware_view.config(text="Luu TEST")     # Mới thêm
 
 
 
 
 def ConfigOtherHandler(current_row):
-    global other_mails, other_dict
+    global other_mails, other_dict, other_view
     other_dict = {}
     other_mails = CollectExcelList("other_mails")
 
@@ -813,28 +690,11 @@ def ConfigOtherHandler(current_row):
         other_msg = "You have [%s] other mails." % str(len(other_mails))
         other_label = ttk.Label(signin, text=other_msg)
         other_label.grid(column=0, row=current_row, columnspan=3, ipadx=6, ipady=2, sticky="W")
+
+
+        #other_view = ttk.Button(signin, text="View List", width=5, command=something_1) # Mới thêm
 
         other_view = ttk.Button(signin, text="View List", width=5, command=ShowOtherMails)
-        other_view.grid(column=4, row=current_row, columnspan=3, ipadx=6, ipady=2, sticky="W")
-
-    end_row = current_row + int(len(other_mails))
-
-    return end_row
-
-
-
-
-def ConfigOtherHandler_clear(current_row):
-    global other_mails, other_dict
-    other_dict = {}
-    other_mails = CollectExcelList("other_mails")
-
-    if len(other_mails) > 0:
-        other_msg = "You have [%s] other mails." % str(len(other_mails))
-        other_label = ttk.Label(signin, text=other_msg)
-        other_label.grid(column=0, row=current_row, columnspan=3, ipadx=6, ipady=2, sticky="W")
-
-        other_view = ttk.Button(signin, text="View List", width=5, command=ShowOtherMails_clear)
         other_view.grid(column=4, row=current_row, columnspan=3, ipadx=6, ipady=2, sticky="W")
 
     end_row = current_row + int(len(other_mails))
@@ -862,6 +722,11 @@ def ConfigHandlerButtons(current_row):
 
         mark_read_btn = ttk.Button(signin, text="Mark as read", width=20, command=MarkAsReadFunction)
         mark_read_btn.grid(column=4, row=current_row, columnspan=2, ipadx=6, ipady=2, sticky="W")
+
+        back_to_main_btn = ttk.Button(signin, text="Back to main page", width=20, command="")
+        back_to_main_btn.grid(column=0, row=current_row, columnspan=2, ipadx=6, ipady=2, sticky="W")
+
+
 
 def HandlerBar():
     # Handler - Suspected handler moving mails to Spam 
@@ -897,24 +762,13 @@ def HandlerBar():
     
 
     
-    # Luu Luu Luu-------------------------------------------------------------------------------
-    suspected_row = ConfigSuspectedHandler_clear(handler_start_row)
-
-
-
-
-
-    # Handler - Important mails
-    important_row = ConfigImportantHandler_clear(suspected_row+1)
-
-    # Handler - Groupware mails
-    groupware_row = ConfigGroupwareHandler_clear(important_row+1)
-
     
 
-    # Handler - Other mails
-    other_row = ConfigOtherHandler_clear(groupware_row+1)
 
+
+
+
+  
 
 
 
@@ -958,18 +812,8 @@ def MainUI():
     
     # Start row of fie
     # Handler - Suspected mails
-    
-
-    
-  
-    
-
-
     # Start and Quit button
    
-
-    
-
     ConfigDomain(row_number=signin_start_row)
     ConfigID(row_number=signin_start_row+1)
     ConfigPassword(row_number=signin_start_row+2)
@@ -993,11 +837,21 @@ def MainUI():
     ConfigSeparator(signin, row_number=signin_start_row+9)
 
     
+    
+    
+
 
 
 
    
     root.mainloop()
+
+
+
+
+
+
+
 
 MainUI()
 #HandlerBar()
