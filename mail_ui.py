@@ -231,12 +231,6 @@ def ConfigDomain(row_number):
 
 
 
-
-  
-
-
-
-
 def back_to(row_number):
     global back_to_label
     #domain_text = tk.StringVar()
@@ -523,7 +517,10 @@ def ShowGroupwareMails():
             groupware_dict[item_index]["var"] = item_var
             groupware_dict[item_index]["text"] = item
     
-    return groupware_dict
+            
+
+
+            return groupware_dict
 
 
 
@@ -621,13 +618,26 @@ def ConfigImportantHandler(current_row):
 
     return end_row
 
+def MoreUI():
+   
+    width = 700
+    height= 600
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    x = (screen_width/3) - (width/2)
+    y = (screen_height/3) - (height/2)
+    root.geometry('%dx%d+%d+%d' % (width, height, x, y))
+
+def HideUI():
+    width = 700
+    height= 500
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    x = (screen_width/3) - (width/2)
+    y = (screen_height/3) - (height/2)
+    root.geometry('%dx%d+%d+%d' % (width, height, x, y))
 
 
-
-
-def HideGroupwares():  
-    groupware_view.config(text="Luu TEST")     # Mới thêm
-    
 
 
 def ConfigGroupwareHandler(current_row):
@@ -638,40 +648,29 @@ def ConfigGroupwareHandler(current_row):
    
 
     if len(groupware_mails) > 0:
+        
         groupware_msg = "You have [%s] groupware mails." % str(len(groupware_mails))
         groupware_label = ttk.Label(signin, text=groupware_msg)
         groupware_label.grid(column=0, row=current_row, columnspan=3, ipadx=6, ipady=2, sticky="W")
         
         groupware_view = ttk.Button(signin, text="View List", width=8, command=ShowGroupwareMails)
+
+        #groupware_view = ToggledFrame(signin, text='SHOW ADVANCED CONFIGURATION', borderwidth=1)
+        #signin.create_window(110, 420, anchor="nw", window=groupware_view)
         
-        #groupware_view = ttk.Button(signin, text="View List", width=8, command=HideGroupwares)    # Mới thêm
-       
         groupware_view.grid(column=4, row=current_row, columnspan=3, ipadx=6, ipady=2, sticky="W")
-
         groupware_view.config(command=lambda:[groupware_view.destroy(),ShowGroupwareMails()])
+        
 
-
+        
     end_row = current_row + int(len(groupware_mails))
 
     return end_row
 
-  
-
-
-
-
-
-def toggle(self):
-    if bool(self.show.get()):
-        self.sub_frame.pack(fill="x", expand=1)
-        self.groupware_view.configure(text='Hide List')
-    else:
-        self.sub_frame.forget()
-        
-        self.groupware_view.configure(text='View List')
-
-
-
+def hide_list_mail_groupware(current_row):
+    hide_list_mail_button = Button(root, text="Hide List Mail", width=8,)
+    hide_list_mail_button.grid(column=4, row=current_row, columnspan=3, ipadx=6, ipady=2, sticky="W")
+   
 
 
 
@@ -761,20 +760,6 @@ def HandlerBar():
     ConfigHandlerButtons(other_row+2)
     
 
-    
-    
-
-
-
-
-
-  
-
-
-
-
-
-    
 
 
 
@@ -785,8 +770,8 @@ def MainUI():
     root = tk.Tk()
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
-    width = 800
-    height = 500
+    width = 1000
+    height = 700
     x = (screen_width/3) - (width/2)
     y = (screen_height/3) - (height/2)
     root.geometry('%dx%d+%d+%d' % (width, height, x, y))
@@ -837,14 +822,14 @@ def MainUI():
     ConfigSeparator(signin, row_number=signin_start_row+9)
 
     
+
+
+
     
-    
-
-
-
-
-   
     root.mainloop()
+
+
+
 
 
 
